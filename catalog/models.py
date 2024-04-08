@@ -16,6 +16,7 @@ class Book(models.Model):
     summary = models.TextField()
     isbn = models.CharField(max_length=10)
     genre = models.CharField(max_length=1, choices=Book_CHOICES, default='F')
+    author = models.ForeignKey('Author', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.title} {self.isbn} {self.summary}"

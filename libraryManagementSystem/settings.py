@@ -78,8 +78,11 @@ WSGI_APPLICATION = 'libraryManagementSystem.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'lms_db',
+        'USER': 'root',
+        'PASSWORD': 'Iniestajnr1$',
+        'HOST': 'localhost'
     }
 }
 
