@@ -14,11 +14,6 @@ class Genre(models.Model):
 
 
 class Book(models.Model):
-    Book_CHOICES = [
-        ('P', 'Politics'),
-        ('F', "Finance"),
-        ('R', "Romance")
-    ]
     title = models.CharField(max_length=255)
     summary = models.TextField()
     isbn = models.CharField(max_length=20)
