@@ -6,6 +6,13 @@ from django.conf import settings
 
 # Create your models here.
 
+class Genre(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Book(models.Model):
     Book_CHOICES = [
         ('P', 'Politics'),
@@ -14,8 +21,8 @@ class Book(models.Model):
     ]
     title = models.CharField(max_length=255)
     summary = models.TextField()
-    isbn = models.CharField(max_length=10)
-    genre = models.CharField(max_length=1, choices=Book_CHOICES, default='F')
+    isbn = models.CharField(max_length=20)
+    genre = models.ManyToManyField(Genre)
     author = models.ForeignKey('Author', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -23,12 +30,13 @@ class Book(models.Model):
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.first_name} {self.last_name}"
 
 
 class Language(models.Model):
@@ -40,7 +48,7 @@ class BookInstance(models.Model):
     UNAVAILABLE = 'U'
     STATUS_CHOICES = [
         (AVAILABLE, 'Available'),
-        (UNAVAILABLE, 'Unavilable')
+        (UNAVAILABLE, 'Unavailable')
     ]
     unique_id = models.UUIDField(default=uuid4, primary_key=True)
     due_back = models.DateField()
