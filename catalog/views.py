@@ -21,39 +21,58 @@ class BookList(APIView):
 
     def get(self, request):
         book = Book.objects.all()
-        serializer = BookSerializer(book, many=True, context={'request': request})
+        serializer = BookSerializer(book, many=True,
+                                    context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET', 'POST'])
-def book_list(request):
-    if request.method == "GET":
-        book = Book.objects.all()
-        serializer = BookSerializer(book, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == "POST":
-        serializer = BookSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+# @api_view(['GET', 'POST'])
+# def book_list(request):
+#     if request.method == "GET":
+#         book = Book.objects.all()
+#         serializer = BookSerializer(book, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#     elif request.method == "POST":
+#         serializer = BookSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
-@api_view(['GET', 'POST', 'DELETE'])
-def book_details(request, pk):
-    book = get_object_or_404(Book, id=pk)
-    if request.method == 'GET':
+class BookDetails(APIView):
+    def get(self, pk):
+        book = get_object_or_404(Book, id=pk)
         serializer = BookSerializer(book)
-        book_qrcode = segno.make_qr(book.title)
-        book_qrcode.save("welcome.png")
         return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'PUT':
+
+    def put(self, request, pk):
+        book = get_object_or_404(Book, id=pk)
         serializer = BookSerializer(book, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(status=status.HTTP_200_OK)
-    elif request.method == 'DELETE':
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, pk):
+        book = get_object_or_404(Book, id=pk)
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# @api_view(['GET', 'POST', 'DELETE'])
+# def book_details(request, pk):
+#     book = get_object_or_404(Book, id=pk)
+#     if request.method == 'GET':
+#         serializer = BookSerializer(book)
+#         book_qrcode = segno.make_qr(book.title)
+#         book_qrcode.save("welcome.png")
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#     elif request.method == 'PUT':
+#         serializer = BookSerializer(book, data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(status=status.HTTP_200_OK)
+#     elif request.method == 'DELETE':
+#         book.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # @api_view(['PUT', 'DELETE', 'GET'])
