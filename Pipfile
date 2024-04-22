@@ -10,6 +10,7 @@ pipenv = "*"
 django-debug-toolbar = "*"
 mysqlclient = "*"
 djangorestframework = "*"
+segno = "*"
 
 [dev-packages]
 
