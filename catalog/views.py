@@ -1,29 +1,47 @@
-import segno
-from django.shortcuts import render
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 
-from .models import *
 from .serializers import *
 
 
 # Create your views here.
 
-class BookList(APIView):
-    def post(self, request):
-        serializer = BookSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+class BookViewSet(ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
 
-    def get(self, request):
-        book = Book.objects.all()
-        serializer = BookSerializer(book, many=True,
-                                    context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# class BookList(ListCreateAPIView):
+#     queryset = Book.objects.all()
+#     serializer_class = BookSerializer
+#
+#
+# class BookDetails(RetrieveUpdateDestroyAPIView):
+#     queryset = Book.objects.all()
+#     serializer_class = BookSerializer
+
+
+class AuthorList(ListCreateAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+
+class AuthorDetails(RetrieveUpdateDestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+# class BookList(APIView):
+#     def post(self, request):
+#         serializer = BookSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#
+#     def get(self, request):
+#         book = Book.objects.all()
+#         serializer = BookSerializer(book, many=True,
+#                                     context={'request': request})
+#         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # @api_view(['GET', 'POST'])
@@ -38,23 +56,23 @@ class BookList(APIView):
 #         serializer.save()
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class BookDetails(APIView):
-    def get(self, pk):
-        book = get_object_or_404(Book, id=pk)
-        serializer = BookSerializer(book)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def put(self, request, pk):
-        book = get_object_or_404(Book, id=pk)
-        serializer = BookSerializer(book, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def delete(self, pk):
-        book = get_object_or_404(Book, id=pk)
-        book.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+# class BookDetails(APIView):
+#     def get(self, request, pk):
+#         book = get_object_or_404(Book, id=pk)
+#         serializer = BookSerializer(book)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#
+#     def put(self, request, pk):
+#         book = get_object_or_404(Book, id=pk)
+#         serializer = BookSerializer(book, data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#
+#     def delete(self, request, pk):
+#         book = get_object_or_404(Book, id=pk)
+#         book.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # @api_view(['GET', 'POST', 'DELETE'])
@@ -88,14 +106,45 @@ class BookDetails(APIView):
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET', 'POST'])
-def author_list(request):
-    if request.method == 'GET':
-        author = Author.objects.all()
-        serializer = AuthorSerializer(author, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'POST':
-        serializer = AuthorSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+# class AuthorList(APIView):
+#     def get(self, request):
+#         author = Author.objects.all()
+#         serializer = AuthorSerializer(author, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#
+#     def post(self, request):
+#         serializer = AuthorSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+# @api_view(['GET', 'POST'])
+# def author_list(request):
+#     if request.method == 'GET':
+#         author = Author.objects.all()
+#         serializer = AuthorSerializer(author, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#     elif request.method == 'POST':
+#         serializer = AuthorSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+# class AuthorDetails(APIView):
+#     def get(self, request, pk):
+#         author = get_object_or_404(Author, id=pk)
+#         serializer = AuthorSerializer(author)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#
+#     def put(self, request, pk):
+#         author = get_object_or_404(Author, id=pk)
+#         serializer = BookSerializer(author, data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#
+#     def delete(self, request, pk):
+#         author = get_object_or_404(Author, id=pk)
+#         author.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)

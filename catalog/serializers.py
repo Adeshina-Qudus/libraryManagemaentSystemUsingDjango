@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import *
 
 
-class BookSerializer(serializers.Serializer):
+class BookSerializer(serializers.ModelSerializer):
     # author = serializers.HyperlinkedRelatedField(
     #     queryset=Author.objects.all(),
     #     view_name='author_details'
