@@ -1,15 +1,13 @@
-from django.urls import path, include
-from rest_framework.routers import SimpleRouter
+from rest_framework_nested import routers
 
 from . import views
 
-router = SimpleRouter()
+router = routers.DefaultRouter()
 router.register("books", views.BookViewSet, "books")
-urlpatterns = [
-    # path('books/', views.BookList.as_view(), name='books'),
-    # path('books/<int:pk>', views.BookDetails.as_view(), name='book_details'),
-    path('', include(router.urls)),
-    path('author/', views.AuthorList.as_view()),
-    path('author/<int:pk>', views.AuthorDetails.as_view())
-    # path('author/)
-]
+router.register("author", views.AuthorViewSet, "author")
+router.register("review", views.ReviewViewSet, "review")
+
+review_router = routers.NestedDefaultRouter(router, "books", lookup='book')
+review_router.register("reviews", views.ReviewViewSet, "review")
+
+urlpatterns = router.urls + review_router.urls

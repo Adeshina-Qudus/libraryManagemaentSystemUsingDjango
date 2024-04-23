@@ -1,16 +1,33 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
 
+from .pagination import DefaultPagination
 from .serializers import *
 
 
 # Create your views here.
 
 class BookViewSet(ModelViewSet):
+    pagination_class = DefaultPagination
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
 
+class AuthorViewSet(ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+
+class ReviewViewSet(ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        return Review.objects.filter(book_id=self.kwargs['book_pk'])
+
+    def get_serializer_class(self):
+        return {'book_pk': self.kwargs['book_id']}
 # class BookList(ListCreateAPIView):
 #     queryset = Book.objects.all()
 #     serializer_class = BookSerializer
@@ -21,14 +38,14 @@ class BookViewSet(ModelViewSet):
 #     serializer_class = BookSerializer
 
 
-class AuthorList(ListCreateAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-
-
-class AuthorDetails(RetrieveUpdateDestroyAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+# class AuthorList(ListCreateAPIView):
+#     queryset = Author.objects.all()
+#     serializer_class = AuthorSerializer
+#
+#
+# class AuthorDetails(RetrieveUpdateDestroyAPIView):
+#     queryset = Author.objects.all()
+#     serializer_class = AuthorSerializer
 
 # class BookList(APIView):
 #     def post(self, request):
