@@ -1,8 +1,11 @@
 from rest_framework import serializers
+from rest_framework.relations import StringRelatedField
+
 from .models import *
 
 
 class BookSerializer(serializers.ModelSerializer):
+    author = StringRelatedField()
     # author = serializers.HyperlinkedRelatedField(
     #     queryset=Author.objects.all(),
     #     view_name='author_details'

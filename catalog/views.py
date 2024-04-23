@@ -1,5 +1,5 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.pagination import PageNumberPagination
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.viewsets import ModelViewSet
 
 from .pagination import DefaultPagination
@@ -9,14 +9,20 @@ from .serializers import *
 # Create your views here.
 
 class BookViewSet(ModelViewSet):
-    pagination_class = DefaultPagination
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    pagination_class = DefaultPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["title", "genre", "summary", "author"]
 
 
 class AuthorViewSet(ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ["first_name", "last_name"]
+    ordering_fields = ['first_name']
 
 
 class ReviewViewSet(ModelViewSet):
@@ -27,7 +33,7 @@ class ReviewViewSet(ModelViewSet):
         return Review.objects.filter(book_id=self.kwargs['book_pk'])
 
     def get_serializer_class(self):
-        return {'book_pk': self.kwargs['book_id']}
+        return {'book_pk': self.kwargs['book_pk']}
 # class BookList(ListCreateAPIView):
 #     queryset = Book.objects.all()
 #     serializer_class = BookSerializer

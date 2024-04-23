@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'demo',
     'debug_toolbar',
     'catalog',
-    'user'
+    'user',
+    'django_filters',
+    'djoser'
 ]
 
 MIDDLEWARE = [
