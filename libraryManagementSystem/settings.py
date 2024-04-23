@@ -111,9 +111,20 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 10
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
 
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'user.serializer.UserCreateSerializer'
+    }
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
 AUTH_USER_MODEL = 'user.LibraryUser'
 
 # Internationalization
