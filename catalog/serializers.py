@@ -6,6 +6,7 @@ from .models import *
 
 class BookSerializer(serializers.ModelSerializer):
     author = StringRelatedField()
+
     # author = serializers.HyperlinkedRelatedField(
     #     queryset=Author.objects.all(),
     #     view_name='author_details'
@@ -32,3 +33,10 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['book', 'name', 'message', 'date']
+
+
+class BookImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BookImage
+        fields = ['book_image', 'book']

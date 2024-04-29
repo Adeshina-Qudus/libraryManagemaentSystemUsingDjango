@@ -66,5 +66,6 @@ class Review(models.Model):
 
 
 class BookImage(models.Model):
-    book_image = models.ImageField(upload_to='')
+    book_image = models.ImageField(upload_to='catalog/image')
     book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name="book_images")
+

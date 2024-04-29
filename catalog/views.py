@@ -28,8 +28,19 @@ class AuthorViewSet(ModelViewSet):
     ordering_fields = ['first_name']
 
 
+class BookImageViewSet(ModelViewSet):
+
+    serializer_class = BookImageSerializer
+
+    def get_queryset(self):
+        return BookImage.objects.filter(book_id=self.kwargs['book_pk'])
+
+    def get_serializer_context(self):
+        return {'book_pk': self.kwargs['book_pk']}
+
+
 class ReviewViewSet(ModelViewSet):
-    queryset = Review.objects.all()
+
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
