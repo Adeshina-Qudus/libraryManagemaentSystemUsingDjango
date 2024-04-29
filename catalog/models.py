@@ -63,3 +63,8 @@ class Review(models.Model):
 
     def __str__(self):
         return f" {self.book} {self.name} {self.message} {self.date}"
+
+
+class BookImage(models.Model):
+    book_image = models.ImageField(upload_to='')
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name="book_images")

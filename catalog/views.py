@@ -1,16 +1,18 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
-
 from .pagination import DefaultPagination
+from .permissions import IsAdminOrReadOnly
 from .serializers import *
 
 
 # Create your views here.
 
 class BookViewSet(ModelViewSet):
-    queryset = Book.objects.all()
     serializer_class = BookSerializer
+    queryset = Book.objects.all()
+    permission_classes = [IsAdminOrReadOnly]
     pagination_class = DefaultPagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["title", "genre", "summary", "author"]
@@ -20,6 +22,7 @@ class AuthorViewSet(ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
+    permission_classes = [IsAuthenticated]
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ["first_name", "last_name"]
     ordering_fields = ['first_name']
